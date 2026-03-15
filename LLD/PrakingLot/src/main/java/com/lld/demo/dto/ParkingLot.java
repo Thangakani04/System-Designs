@@ -35,4 +35,62 @@ public class ParkingLot { //singleton class
 		return parkingLot;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<EntrancePanel> getEntrancePanels() {
+		return entrancePanels;
+	}
+
+	public void setEntrancePanels(List<EntrancePanel> entrancePanels) {
+		this.entrancePanels = entrancePanels;
+	}
+
+	public List<ExitPanel> getExitPanels() {
+		return exitPanels;
+	}
+
+	public void setExitPanels(List<ExitPanel> exitPanels) {
+		this.exitPanels = exitPanels;
+	}
+
+	public DisplayBoard getDisplayBoard() {
+		return displayBoard;
+	}
+
+	public void setDisplayBoard(DisplayBoard displayBoard) {
+		this.displayBoard = displayBoard;
+	}
+
+	public Map<ParkingSpotEnum, List<ParkingSpot>> getFreeParkingSpots() {
+		return freeParkingSpots;
+	}
+
+	public void setFreeParkingSpots(Map<ParkingSpotEnum, List<ParkingSpot>> freeParkingSpots) {
+		this.freeParkingSpots = freeParkingSpots;
+	}
+
+	public Map<ParkingSpotEnum, List<ParkingSpot>> getOccupiedParkingSpots() {
+		return occupiedParkingSpots;
+	}
+
+	public void setOccupiedParkingSpots(Map<ParkingSpotEnum, List<ParkingSpot>> occupiedParkingSpots) {
+		this.occupiedParkingSpots = occupiedParkingSpots;
+	}
+
+	public static ParkingLot getParkingLot() {
+		return parkingLot;
+	}
+
+	public static void setParkingLot(ParkingLot parkingLot) {
+		ParkingLot.parkingLot = parkingLot;
+	}
+	
+	
+
 }
