@@ -1,15 +1,19 @@
 package com.lld.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.lld.demo.ParkingStrategy.Strategy;
+import com.lld.demo.dto.ParkingEvent;
 import com.lld.demo.dto.ParkingLot;
 import com.lld.demo.dto.ParkingTicket;
 import com.lld.demo.dto.vehicle.Vehicle;
+import com.lld.demo.enums.ParkingEventType;
 import com.lld.demo.enums.ParkingSpotEnum;
 import com.lld.demo.exceptions.InvalidTicketException;
 import com.lld.demo.exceptions.SpotNotFoundException;
 import com.lld.demo.interfaces.DisplayService;
+import com.lld.demo.interfaces.Observer;
 import com.lld.demo.interfaces.ParkingService;
 import com.lld.demo.parkingSpot.ParkingSpot;
 
@@ -20,10 +24,13 @@ public class ParkingServiceImpl implements ParkingService {
 	ParkingLot parkingLot;
 	DisplayService displayService;
 	
+	private List<Observer> observers;
+	
 	public ParkingServiceImpl(Strategy parkingStrategy) {
 		this.parkingStrategy = parkingStrategy;
 		parkingLot = parkingLot.getInstance();
 		displayService= new DisplayServiceImpl();
+		observers= new ArrayList<>();
 	}
 
 	@Override
@@ -48,8 +55,11 @@ public class ParkingServiceImpl implements ParkingService {
 						freeParkingSpots.remove(parkingSpot);
 						occupiedParkingSpots.add(parkingSpot);
 						ParkingTicket parkingTicket = new ParkingTicket(vehicle, parkingSpot);
+						ParkingEvent parkingEvent = new ParkingEvent(ParkingEventType.ENTRY, parkingSpotEnum);
+						notifyAllObservers(parkingEvent);
+						
 						//we have to call display service which will update display board.
-						displayService.update(parkingSpotEnum, -1);
+						//displayService.update(parkingSpotEnum, -1);
 						return parkingTicket;
 					}
 					entry(vehicle);
@@ -61,6 +71,19 @@ public class ParkingServiceImpl implements ParkingService {
 			throw new RuntimeException(e);
 		}
 		return null;
+	}
+	
+	public void addObserver(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+	public void notifyAllObservers(ParkingEvent parkingEvent) {
+		
+		for(Observer observer : observers) {
+			observer.update(parkingEvent);
+		}
+		
 	}
 	
 	private void addParkingSpotInFreeList( List<ParkingSpot> parkingSpots , ParkingSpot parkingSpot) {
@@ -76,8 +99,11 @@ public class ParkingServiceImpl implements ParkingService {
 			int amount = parkingSpot.getAmount();
 			parkingSpot.setFree(true);
 			parkingLot.getOccupiedParkingSpots().get(vehicle.getParkingSpotEnum()).remove(parkingSpot);
+			addParkingSpotInFreeList(parkingLot.getFreeParkingSpots().get(vehicle.getParkingSpotEnum()) , parkingSpot);
+			ParkingEvent parkingEvent = new ParkingEvent(ParkingEventType.EXIT, vehicle.getParkingSpotEnum());
+			notifyAllObservers(parkingEvent);
 			//after removed from occupied we have to keep it in right place , use binary search
-			displayService.update(vehicle.getParkingSpotEnum(), 1);
+			//displayService.update(vehicle.getParkingSpotEnum(), 1);
 			return amount;
 			
 		}
