@@ -26,6 +26,14 @@ public class ParkingLot { //singleton class
 		displayBoard = DisplayBoard.getInstance();
 		freeParkingSpots = new HashMap<>();
 		occupiedParkingSpots = new HashMap<>();
+		
+		freeParkingSpots.put(ParkingSpotEnum.MINI, new ArrayList<>());
+		freeParkingSpots.put(ParkingSpotEnum.LARGE, new ArrayList<>());
+		freeParkingSpots.put(ParkingSpotEnum.COMPACT, new ArrayList<>());
+		
+		occupiedParkingSpots.put(ParkingSpotEnum.MINI, new ArrayList<>());
+		occupiedParkingSpots.put(ParkingSpotEnum.LARGE, new ArrayList<>());
+		occupiedParkingSpots.put(ParkingSpotEnum.COMPACT, new ArrayList<>());
 	}
 	
 	public static ParkingLot getInstance() {

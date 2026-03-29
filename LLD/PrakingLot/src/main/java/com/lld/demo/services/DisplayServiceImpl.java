@@ -7,16 +7,18 @@ import com.lld.demo.enums.ParkingSpotEnum;
 import com.lld.demo.interfaces.DisplayService;
 import com.lld.demo.interfaces.Observer;
 
+import ch.qos.logback.core.spi.ConfigurationEvent.EventType;
+
 public class DisplayServiceImpl implements DisplayService , Observer {
 
-	@Override
+	/*@Override
 	public void update(ParkingSpotEnum parkingSpotEnum, int change) {
 		//we have to update the free spot counts here
 		int currentcount = DisplayBoard.getInstance().getFreeParkingSpots().get(parkingSpotEnum);
 		int newCount =currentcount+change;
 		DisplayBoard.getInstance().getFreeParkingSpots().replace(parkingSpotEnum, newCount);
 		
-	}
+	}*/
 
 	@Override
 	public void update(ParkingEvent parkingEvent) {
@@ -30,7 +32,21 @@ public class DisplayServiceImpl implements DisplayService , Observer {
 		}
 		
 		int newCount = currentcount+change;
+		DisplayBoard.getInstance().getFreeParkingSpots().replace(parkingEvent.getParkingSpotEnum(), newCount);
+		return;
 		
 	}
 
+	
+	public void update(ParkingSpotEnum parkingSpotEnum, int change) {
+		Integer currentCount = DisplayBoard.getInstance().getFreeParkingSpots().get(parkingSpotEnum);
+		if(currentCount == null) {
+			currentCount=0;
+		}
+		int newCount = currentCount+change;
+		DisplayBoard.getInstance().getFreeParkingSpots().replace(parkingSpotEnum, newCount);
+		return;
+
+		
+	}
 }

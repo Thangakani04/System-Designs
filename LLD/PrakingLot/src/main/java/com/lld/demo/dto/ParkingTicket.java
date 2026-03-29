@@ -57,6 +57,10 @@ public class ParkingTicket {
 		return x;
 	}
 	
+	public int getParkingHours() {
+		return 2; 
+	}
+	
 	
 	
 	

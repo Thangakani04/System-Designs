@@ -16,6 +16,7 @@ import com.lld.demo.interfaces.DisplayService;
 import com.lld.demo.interfaces.Observer;
 import com.lld.demo.interfaces.ParkingService;
 import com.lld.demo.parkingSpot.ParkingSpot;
+import com.lld.demo.parkingSpot.spotDecorator.Wash;
 
 public class ParkingServiceImpl implements ParkingService {
 
@@ -71,6 +72,12 @@ public class ParkingServiceImpl implements ParkingService {
 			throw new RuntimeException(e);
 		}
 		return null;
+	}
+	
+	public void addWash(ParkingTicket parkingTicket) {
+		parkingTicket.setParkingSpot(new Wash(parkingTicket.getParkingSpot()));
+		return;
+		
 	}
 	
 	public void addObserver(Observer observer) {
